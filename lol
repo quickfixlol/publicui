@@ -1290,17 +1290,37 @@ function library:GetConfigs(dahood)
     local placeidfolder = string.format("%s//%s", self.folder, game.PlaceId)
     local dahoodfolder = self.folder .. "//dahood"
 
-    for _, config in next, (isfolder(placeidfolder) and listfiles(placeidfolder) or {}) do
-        local name = config:gsub(placeidfolder .. "\\", ""):gsub("." .. self.extension, "")
-        table.insert(configs, name)
-    end
+    -- Debugging: Print folder paths
+    print("PlaceID Folder: " .. placeidfolder)
+    print("Dahood Folder: " .. dahoodfolder)
 
-    if dahood and isfolder(dahoodfolder) then
-        for _, config in next, (isfolder(placeidfolder) and listfiles(placeidfolder) or {}) do
-            configs[config:gsub(dahoodfolder .. "\\", "")] = readfile(config)
+    -- Check the placeidfolder for existing files
+    if isfolder(placeidfolder) then
+        local files = listfiles(placeidfolder)
+        print("Files in PlaceID Folder: ", table.concat(files, ", "))
+        
+        for _, config in next, files do
+            local name = config:gsub(placeidfolder .. "\\", ""):gsub("." .. self.extension, "")
+            table.insert(configs, name)
         end
+    else
+        print("PlaceID Folder does not exist: " .. placeidfolder)
     end
 
+    -- Check the dahoodfolder if dahood flag is true
+    if dahood and isfolder(dahoodfolder) then
+        local files = listfiles(dahoodfolder)
+        print("Files in Dahood Folder: ", table.concat(files, ", "))
+        
+        for _, config in next, files do
+            local name = config:gsub(dahoodfolder .. "\\", ""):gsub("." .. self.extension, "")
+            table.insert(configs, name)
+        end
+    else
+        print("Dahood Folder does not exist or dahood flag is false: " .. dahoodfolder)
+    end
+
+    -- Return the final list of configs
     return configs
 end
 

@@ -1290,19 +1290,23 @@ function library:GetConfigs(dahood)
     local placeidfolder = string.format("%s//%s", self.folder, game.PlaceId)
     local universalfolder = self.folder .. "//dahood"
 
+    -- List the files in the placeidfolder
     for _, config in next, (isfolder(placeidfolder) and listfiles(placeidfolder) or {}) do
         local name = config:gsub(placeidfolder .. "\\", ""):gsub("." .. self.extension, "")
-        table.insert(configs, name)
+        table.insert(configs, name)  -- Add only the config name
     end
 
-    if universal and isfolder(universalfolder) then
-        for _, config in next, (isfolder(placeidfolder) and listfiles(placeidfolder) or {}) do
-            configs[config:gsub(universalfolder .. "\\", "")] = readfile(config)
+    -- List the files in the universalfolder (dahood folder)
+    if dahood and isfolder(universalfolder) then
+        for _, config in next, (isfolder(universalfolder) and listfiles(universalfolder) or {}) do
+            local name = config:gsub(universalfolder .. "\\", ""):gsub("." .. self.extension, "")
+            table.insert(configs, name)  -- Add only the config name
         end
     end
 
     return configs
 end
+
 
 function library:Close()
     self.open = not self.open

@@ -1244,12 +1244,12 @@ function library:ConfigIgnore(flag)
     table.insert(configignores, flag)
 end
 
-function library:DeleteConfig(name, universal)
+function library:DeleteConfig(name, dahood)
     assert(self.folder, "No folder specified")
     assert(self.extension, "No file extension specified")
 
     -- Use "universal" or game.PlaceId as the place identifier
-    local placeid = universal and "universal" or game.PlaceId
+    local placeid = dahood and "dahood" or game.PlaceId
 
     -- Construct the folder path correctly (ensure it's a single path)
     local folderpath = string.format("%s/%s", self.folder, placeid)  -- Using '/' separator

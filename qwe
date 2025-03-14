@@ -1272,6 +1272,7 @@ function library:LoadConfig(name, dahood)
             local file = readfile(filepath)
             local config = services.HttpService:JSONDecode(file)
 
+            -- Apply the config settings
             for flag, v in next, config do
                 local func = flags[flag]
                 if func then
@@ -1280,7 +1281,8 @@ function library:LoadConfig(name, dahood)
             end
         end
     end
-end
+end -- xd
+
 
 function library:GetConfigs(dahood)
     assert(self.folder, "No folder specified")
@@ -1306,6 +1308,7 @@ function library:GetConfigs(dahood)
 
     return configs
 end
+
 
 
 function library:Close()

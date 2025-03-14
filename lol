@@ -1244,19 +1244,31 @@ function library:ConfigIgnore(flag)
     table.insert(configignores, flag)
 end
 
-function library:DeleteConfig(name, dahood)
+function library:DeleteConfig(name, universal)
     assert(self.folder, "No folder specified")
     assert(self.extension, "No file extension specified")
 
-    local placeid = dahood and "dahood" or game.PlaceId
+    local placeid = universal and "universal" or game.PlaceId
 
-    local folderpath = string.format("%s//%s", self.folder, placeid)
-    local filepath = string.format("%s//%s.%s", folderpath, name, self.extension)
+    local folderpath = string.format("%s/%s", self.folder, placeid)  -- Use '/' for cross-platform compatibility
+    local filepath = string.format("%s/%s.%s", folderpath, name, self.extension)
 
-    if isfolder(folderpath) and isfile(filepath) then  
+    -- Check if the folder exists and the file exists before trying to delete
+    if isfolder(folderpath) and isfile(filepath) then
+        -- Attempt to delete the file
         delfile(filepath)
+        
+        -- Double-check if the file was successfully deleted
+        if not isfile(filepath) then
+            print("Successfully deleted:", filepath)
+        else
+            print("Failed to delete:", filepath)
+        end
+    else
+        print("Folder or file not found:", folderpath, filepath)
     end
 end
+
 
 function library:LoadConfig(name, dahood)
     if type(name) == "string" and name:find("%w") then

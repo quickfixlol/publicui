@@ -1244,7 +1244,7 @@ function library:ConfigIgnore(flag)
     table.insert(configignores, flag)
 end
 
-function library:DeleteConfig(name, dahood) -- UPDATED
+function library:DeleteConfig(name, dahood)
     assert(self.folder, "No folder specified")
     assert(self.extension, "No file extension specified")
 
@@ -1255,14 +1255,10 @@ function library:DeleteConfig(name, dahood) -- UPDATED
 
     if isfolder(folderpath) and isfile(filepath) then  
         delfile(filepath)
-        print("Config deleted:", filepath)  -- Debugging: Check if the config is deleted successfully
-    else
-        print("Config not found:", filepath)  -- Debugging: If the config isn't found
     end
 end
 
-
-function library:LoadConfig(name, dahood) -- UPDATED
+function library:LoadConfig(name, dahood)
     if type(name) == "string" and name:find("%w") then
         assert(self.folder, "No folder specified")
         assert(self.extension, "No file extension specified")
@@ -1272,28 +1268,19 @@ function library:LoadConfig(name, dahood) -- UPDATED
         local folderpath = string.format("%s//%s", self.folder, placeid)
         local filepath = string.format("%s//%s.%s", folderpath, name, self.extension)
 
-        -- Debugging: Check if the folder and file exist
-        print("Loading config from:", filepath)
-
         if isfolder(folderpath) and isfile(filepath) then  
             local file = readfile(filepath)
             local config = services.HttpService:JSONDecode(file)
 
-            -- Apply the config settings
             for flag, v in next, config do
                 local func = flags[flag]
                 if func then
                     func(v)
                 end
             end
-
-            print("Config loaded:", name)  -- Debugging: Confirm the config is applied
-        else
-            print("Config not found:", filepath)  -- Debugging: If the file isn't found
         end
     end
 end
-
 
 function library:GetConfigs(dahood)
     assert(self.folder, "No folder specified")

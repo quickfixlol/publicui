@@ -2745,13 +2745,13 @@ function library:Watermark(str)
 
 local watermark = utility.create("Square", {
     Size = UDim2.new(0, size + 16, 0, 20),
-    Position = UDim2.new(0.5, 0, 0, 16), -- 50% of screen width
-    AnchorPoint = Vector2.new(0.5, 0),  -- Shifts its X origin to the center
+    Position = UDim2.new(0.5, -(size + 16) / 2, 0, 16), -- Centers it
     Filled = true,
     Thickness = 0,
     ZIndex = 3,
     Theme = "Window Background"
 })
+
 
 
     self.watermarkobject = watermark

@@ -2743,14 +2743,16 @@ end
 function library:Watermark(str)
     local size = utility.textlength(str, Drawing.Fonts.Plex, 13).X
 
-    local watermark = utility.create("Square", {
-        Size = UDim2.new(0, size + 16, 0, 20),
-        Position = UDim2.new(0, 16, 0, 16),
-        Filled = true,
-        Thickness = 0,
-        ZIndex = 3,
-        Theme = "Window Background"
-    })
+local watermark = utility.create("Square", {
+    Size = UDim2.new(0, size + 16, 0, 20),
+    Position = UDim2.new(0.5, 0, 0, 16), -- 50% of screen width
+    AnchorPoint = Vector2.new(0.5, 0),  -- Shifts its X origin to the center
+    Filled = true,
+    Thickness = 0,
+    ZIndex = 3,
+    Theme = "Window Background"
+})
+
 
     self.watermarkobject = watermark
 
